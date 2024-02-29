@@ -5,12 +5,12 @@ import sys
 from handlers import dp
 from init import set_main_menu, bot, DEBUG
 from db.base import init_models
-from utilits.check_subscribe import send_messages_sub
+from utilits.check_subscribe import schedulers_start
 
 
 async def main() -> None:
     await init_models()
-    await send_messages_sub()
+    await schedulers_start()
     await set_main_menu()
     await dp.start_polling(bot)
 
