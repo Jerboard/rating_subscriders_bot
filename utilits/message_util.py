@@ -13,4 +13,4 @@ async def send_invoice_link(user_id: int):
             f'Ваша ссылка👇👇👇\n'
             f'(нажми на нее и она скопируется)\n\n'
             f'<code>{referral_link}</code>')
-    await bot.send_message(text, reply_markup=ReplyKeyboardRemove ())
+    await bot.send_message(chat_id=user_id, text=text, reply_markup=ReplyKeyboardRemove ())
