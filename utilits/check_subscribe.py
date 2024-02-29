@@ -3,20 +3,24 @@ from aiogram.exceptions import TelegramForbiddenError
 
 import logging
 from datetime import datetime, timedelta
+from apscheduler.triggers.interval import IntervalTrigger
 
 import db
 import keyboards as kb
-from init import dp, bot, TZ, CHANNEL_ID
+from init import dp, bot, TZ, CHANNEL_ID, scheduler
 from enums import UsersStatus
+
+
+async def schedulers_start():
+    scheduler.add_job(send_messages_sub, trigger=IntervalTrigger.interval, minutes=1)
+    scheduler.start()
 
 
 # проверяет подписку шлёт уведомления
 async def send_messages_sub():
     users = await db.get_new_subscribers()
-    ten_minutes_ago = datetime.now(TZ) - timedelta(minutes=1)
+    ten_minutes_ago = datetime.now(TZ) - timedelta(minutes=10)
     for user in users:
-        print(TZ.localize(user.get_link_time))
-        print(ten_minutes_ago)
         if TZ.localize(user.get_link_time) <= ten_minutes_ago:
             try:
                 subscribe_info = await bot.get_chat_member(chat_id=CHANNEL_ID, user_id=user.user_id)
