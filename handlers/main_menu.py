@@ -52,7 +52,7 @@ async def command_start_handler(msg: Message, state: FSMContext) -> None:
         await msg.answer(text, reply_markup=kb.get_channel_link_kb(referer.invite_link))
 
     else:
-        text = 'Для регистрации в акции нажми "Зарегистрироваться"👇👇'
+        text = 'Для регистрации в акции нажми "Поделиться контактом" 👇👇'
         await msg.answer (text, reply_markup=kb.get_send_contact_kb ())
 
 

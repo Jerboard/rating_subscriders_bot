@@ -3,7 +3,7 @@ import enum
 
 class ButtonText(str, enum.Enum):
     GET_LINK = 'Получить ссылку'
-    SEND_CONTACT = 'Зарегистрироваться'
+    SEND_CONTACT = 'Поделиться контактом'
 
 
 class UsersStatus(str, enum.Enum):
