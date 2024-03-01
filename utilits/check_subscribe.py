@@ -12,7 +12,7 @@ from enums import UsersStatus
 
 
 async def schedulers_start():
-    scheduler.add_job(send_messages_sub, trigger=IntervalTrigger.interval, minutes=1)
+    scheduler.add_job(send_messages_sub, trigger='interval', minutes=1)
     scheduler.start()
 
 
