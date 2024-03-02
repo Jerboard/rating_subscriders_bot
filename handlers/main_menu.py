@@ -11,12 +11,9 @@ from init import dp, TZ, bot, CHANNEL_ID, BOT_NAME, ADMINS
 from utilits.message_util import send_invoice_link
 from enums import ButtonText, UsersStatus, Callbacks
 
-
-# первый экран
-# @dp.message(lambda msg: msg.content_type == 'photo')
-# async def save_photo(msg: Message) -> None:
-#     print(f'"{msg.caption}": "{msg.photo[-1].file_id}"')
-#     print(f'"{msg.photo[-1].file_id}",')
+@dp.channel_post()
+async def fff(msg: Message):
+    print(msg.chat.id)
 
 
 # первый экран
@@ -48,7 +45,9 @@ async def command_start_handler(msg: Message, state: FSMContext) -> None:
             user_id=msg.from_user.id,
             status=UsersStatus.GET_LINK.value,
             get_link_time=datetime.now(TZ))
-        text = 'Перейти в канал'
+        text = (f'Привет! Присоединяйтесь к нам, {msg.from_user.full_name}!\n\n'
+                f'Подпишитесь на канал, чтобы вовремя получить доступ к программе восстановления '
+                f'организма для ВЗРОСЛЫХ и ДЕТЕЙ!👇')
         await msg.answer(text, reply_markup=kb.get_channel_link_kb(referer.invite_link))
 
     else:
