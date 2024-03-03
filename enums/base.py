@@ -9,6 +9,8 @@ class ButtonText(str, enum.Enum):
 class UsersStatus(str, enum.Enum):
     NEW = 'new'
     GET_LINK = 'get_link'
+    GET_LINK_1 = 'get_link_1'
+    GET_LINK_3 = 'get_link_3'
     PARTICIPANT = 'participant'
     SUBSCRIBER = 'subscriber'
     BLOCKED_BOT = 'blocked_bot'
