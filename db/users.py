@@ -97,9 +97,10 @@ async def update_user(
 async def get_new_subscribers() -> tuple[UserRow]:
     async with begin_connection() as conn:
         result = await conn.execute (UserTable.select().where(
-            UserTable.c.status == UsersStatus.GET_LINK.value,
-            UserTable.c.status == UsersStatus.GET_LINK_1.value,
-            UserTable.c.status == UsersStatus.GET_LINK_3.value,
+            sa.or_(
+                UserTable.c.status == UsersStatus.GET_LINK.value,
+                UserTable.c.status == UsersStatus.GET_LINK_1.value,
+                UserTable.c.status == UsersStatus.GET_LINK_3.value,)
         ))
 
     return result.all()

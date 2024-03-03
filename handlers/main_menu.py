@@ -11,10 +11,6 @@ from init import dp, TZ, bot, CHANNEL_ID, BOT_NAME, ADMINS
 from utilits.message_util import send_invoice_link
 from enums import ButtonText, UsersStatus, Callbacks
 
-@dp.channel_post()
-async def fff(msg: Message):
-    print(msg.chat.id)
-
 
 # первый экран
 @dp.message(CommandStart())

@@ -27,7 +27,7 @@ TZ = timezone('Europe/Moscow')
 
 scheduler = AsyncIOScheduler(timezone=TZ)
 
-DEBUG = bool(getenv('DEBUG'))
+DEBUG = bool(int(getenv('DEBUG')))
 
 ENGINE = create_async_engine(url=getenv('DB_URL'))
 
