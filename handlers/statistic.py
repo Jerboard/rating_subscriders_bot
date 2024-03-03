@@ -16,7 +16,8 @@ from enums import ButtonText, UsersStatus
 async def get_user_statistic(msg: Message, state: FSMContext) -> None:
     user_info = await db.get_user_info (msg.from_user.id)
     if user_info.status != UsersStatus.PARTICIPANT.value:
-        text = 'Перейдите и подпишитесь на канал и вы тоже сможете участвовать в акции.'
+        text = ('Перейдите и подпишитесь на канал и вы тоже сможете получить персональную ссылку-приглашение '
+                'для своих друзей, которым желаете ЗДОРОВЬЯ!')
         await msg.answer (text)
 
     else:
