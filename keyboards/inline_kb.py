@@ -15,7 +15,7 @@ def get_channel_link_kb(link: str):
 def get_main_admin_kb():
     return InlineKeyboardMarkup(inline_keyboard=[
         [InlineKeyboardButton(text='Статистика', callback_data=Callbacks.ADMIN_STATISTIC.value)],
-        [InlineKeyboardButton(text='Провести акцию', callback_data=Callbacks.ADMIN_RATING_START.value)],
+        [InlineKeyboardButton(text='Написать лидерам рейтинга', callback_data=Callbacks.ADMIN_RATING_START.value)],
         [InlineKeyboardButton(text='Написать всем', callback_data=f'{Callbacks.ADMIN_SEND_MESSAGE.value}:all')],
     ])
 
