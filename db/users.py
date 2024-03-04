@@ -36,7 +36,7 @@ UserTable = sa.Table(
     sa.Column('status', sa.String(255), default='new'),
     sa.Column('invite_link', sa.String(255)),
     sa.Column('phone_number', sa.String(255)),
-    sa.Column('referrer', sa.Integer),
+    sa.Column('referrer', sa.BigInteger),
     sa.Column('is_subscriber', sa.Boolean),
     sa.Column('get_link_time', sa.DateTime(timezone=True))
 )

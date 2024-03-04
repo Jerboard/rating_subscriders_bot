@@ -47,8 +47,14 @@ async def command_start_handler(msg: Message, state: FSMContext) -> None:
         await msg.answer(text, reply_markup=kb.get_channel_link_kb(referer.invite_link))
 
     else:
+        invite_link = await bot.create_chat_invite_link (
+            chat_id=CHANNEL_ID,
+            name=msg.from_user.full_name [:32]
+        )
+
         await db.update_user (
             user_id=msg.from_user.id,
+            invite_link=invite_link.invite_link,
             status=UsersStatus.PARTICIPANT.value
         )
         await send_invoice_link (msg.from_user.id)
