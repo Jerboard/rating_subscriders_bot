@@ -13,6 +13,13 @@ from enums import ButtonText, UsersStatus, Callbacks
 
 
 # первый экран
+# @dp.message()
+# async def command_start_handler(msg: Message, state: FSMContext) -> None:
+#     print(msg.video.file_id)
+#     print(msg.caption)
+
+
+# первый экран
 @dp.message(CommandStart())
 async def command_start_handler(msg: Message, state: FSMContext) -> None:
     if msg.from_user.id in ADMINS:

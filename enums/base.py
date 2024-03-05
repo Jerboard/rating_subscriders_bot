@@ -11,6 +11,8 @@ class UsersStatus(str, enum.Enum):
     GET_LINK = 'get_link'
     GET_LINK_1 = 'get_link_1'
     GET_LINK_3 = 'get_link_3'
+    GET_LINK_DAY_HOUR = 'day_hour_hours_ago'
+    GET_LINK_DAY = 'get_link_day'
     PARTICIPANT = 'participant'
     SUBSCRIBER = 'subscriber'
     BLOCKED_BOT = 'blocked_bot'

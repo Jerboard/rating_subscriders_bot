@@ -100,7 +100,10 @@ async def get_new_subscribers() -> tuple[UserRow]:
             sa.or_(
                 UserTable.c.status == UsersStatus.GET_LINK.value,
                 UserTable.c.status == UsersStatus.GET_LINK_1.value,
-                UserTable.c.status == UsersStatus.GET_LINK_3.value,)
+                UserTable.c.status == UsersStatus.GET_LINK_3.value,
+                UserTable.c.status == UsersStatus.GET_LINK_DAY.value,
+                UserTable.c.status == UsersStatus.GET_LINK_DAY_HOUR.value,
+            )
         ))
 
     return result.all()
