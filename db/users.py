@@ -142,7 +142,7 @@ async def get_all_participant() -> tuple[UserRow]:
     async with begin_connection() as conn:
         result = await conn.execute (
             UserTable.select().where(
-                UserTable.c.invite_link is not None,
+                UserTable.c.invite_link != None,
                 sa.or_(
                 UserTable.c.status == UsersStatus.SUBSCRIBER,
                 UserTable.c.status == UsersStatus.PARTICIPANT)))
@@ -155,7 +155,7 @@ async def get_all_subscriber() -> tuple[UserRow]:
     async with begin_connection() as conn:
         result = await conn.execute (
             UserTable.select().where(
-                UserTable.c.referrer is not None,
+                UserTable.c.referrer != None,
                 sa.or_(
                     UserTable.c.status == UsersStatus.SUBSCRIBER,
                     UserTable.c.status == UsersStatus.PARTICIPANT,)))
