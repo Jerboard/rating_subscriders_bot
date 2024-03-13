@@ -17,25 +17,18 @@ async def admin_statistic(cb: CallbackQuery):
     # ссылку получили (пришёл по ссылке и подписался)
     # всего перешло (пришёл по ссылке и подписался)
 
-    participant = 0
-    subscriber = 0
+    participants = await db.get_all_participant()
+    subscribers = await db.get_all_subscriber()
+
+    text = (f'<b>Приглашающие:</b> {len(participants)}\n'
+            f'<b>Приглашённые:</b> {len(subscribers)}\n\n')
 
     users_rating = await db.get_users_rating()
-    text = f'<b>Лучшие участники:</b>\n\n'
+    text = f'{text}<b>Лучшие участники:</b>\n\n'
     for row in users_rating:
         user_info = await db.get_user_info(row.referrer)
         if user_info:
             text = f'{text}{user_info.full_name} - {row.points} подписчиков\n'
-
-            if user_info.invite_link:
-                participant += 1
-
-            if user_info.referrer:
-                subscriber += 1
-
-    text = (f'<b>Приглашающие:</b> {participant}\n'
-            f'<b>Приглашённые:</b> {subscriber}\n\n'
-            f'{text}')
 
     if len(text) > 2000:
         text = f'{text[:2000]}...'

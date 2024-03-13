@@ -135,3 +135,29 @@ async def get_users_rating(limit: int = 50) -> tuple[RatingRow]:
         result = await conn.execute (query)
 
     return result.all()
+
+
+# возвращает всех подписчиков пользователя
+async def get_all_participant() -> tuple[UserRow]:
+    async with begin_connection() as conn:
+        result = await conn.execute (
+            UserTable.select().where(
+                UserTable.c.invite_link is not None,
+            ).where(sa.or_(
+                UserTable.c.status == UsersStatus.SUBSCRIBER,
+                UserTable.c.status == UsersStatus.PARTICIPANT,)))
+
+    return result.all()
+
+
+# возвращает всех подписчиков пользователя
+async def get_all_subscriber() -> tuple[UserRow]:
+    async with begin_connection() as conn:
+        result = await conn.execute (
+            UserTable.select().where(
+                UserTable.c.referrer is not None,
+            ).where(sa.or_(
+                UserTable.c.status == UsersStatus.SUBSCRIBER,
+                UserTable.c.status == UsersStatus.PARTICIPANT,)))
+
+    return result.all()
