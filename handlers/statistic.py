@@ -1,19 +1,21 @@
-from aiogram.filters import Command, StateFilter
-from aiogram.types import Message, CallbackQuery, ReplyKeyboardRemove
+from aiogram.filters import Command
+from aiogram.types import Message
 from aiogram.fsm.context import FSMContext
-from aiogram.enums.content_type import ContentType
-
-from datetime import datetime, timedelta
 
 import db
 import keyboards as kb
-from init import dp, TZ, bot, CHANNEL_ID, BOT_NAME
-from enums import ButtonText, UsersStatus
+from init import dp, BOT_NAME, ADMINS
+from enums import UsersStatus
 
 
 # статистика пользователя
 @dp.message(Command('statistic'))
 async def get_user_statistic(msg: Message, state: FSMContext) -> None:
+    if msg.from_user.id in ADMINS:
+        await state.clear()
+        await msg.answer(text='<b>Действия администратора:</b>', reply_markup=kb.get_main_admin_kb())
+        return
+
     user_info = await db.get_user_info (msg.from_user.id)
     if user_info.status != UsersStatus.PARTICIPANT.value:
         text = ('Перейдите и подпишитесь на канал и вы тоже сможете получить персональную ссылку-приглашение '

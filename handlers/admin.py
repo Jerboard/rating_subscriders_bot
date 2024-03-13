@@ -14,12 +14,30 @@ from enums import ButtonText, UsersStatus, Callbacks
 
 @dp.callback_query(lambda cb: cb.data.startswith(Callbacks.ADMIN_STATISTIC.value))
 async def admin_statistic(cb: CallbackQuery):
-    users_rating = await db.get_users_rating()
+    # ссылку получили (пришёл по ссылке и подписался)
+    # всего перешло (пришёл по ссылке и подписался)
 
-    text = '<b>Лучшие участники:</b>\n\n'
+    participant = 0
+    subscriber = 0
+
+    users_rating = await db.get_users_rating()
+    text = f'<b>Лучшие участники:</b>\n\n'
     for row in users_rating:
         user_info = await db.get_user_info(row.referrer)
         text = f'{text}{user_info.full_name} - {row.points} подписчиков\n'
+
+        if user_info.invite_link:
+            participant += 1
+
+        if user_info.referrer:
+            subscriber += 1
+
+    text = (f'<b>Приглашающие:</b> {participant}\n'
+            f'<b>Приглашённые:</b> {subscriber}\n\n'
+            f'{text}')
+
+    if len(text) > 2000:
+        text = f'{text[:2000]}...'
 
     await cb.message.answer(text)
 

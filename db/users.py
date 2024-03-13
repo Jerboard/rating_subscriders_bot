@@ -129,7 +129,7 @@ async def get_users_rating(limit: int = 50) -> tuple[RatingRow]:
         UserTable.c.status == UsersStatus.PARTICIPANT,
         UserTable.c.referrer is not None,
     )).where(UserTable.c.referrer.isnot(None)).
-             group_by(UserTable.c.referrer).order_by(sa.desc('points')).limit(limit))
+             group_by(UserTable.c.referrer).order_by(sa.desc('points')))
 
     async with begin_connection() as conn:
         result = await conn.execute (query)
