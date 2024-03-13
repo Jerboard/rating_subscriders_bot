@@ -24,13 +24,14 @@ async def admin_statistic(cb: CallbackQuery):
     text = f'<b>Лучшие участники:</b>\n\n'
     for row in users_rating:
         user_info = await db.get_user_info(row.referrer)
-        text = f'{text}{user_info.full_name} - {row.points} подписчиков\n'
+        if user_info:
+            text = f'{text}{user_info.full_name} - {row.points} подписчиков\n'
 
-        if user_info.invite_link:
-            participant += 1
+            if user_info.invite_link:
+                participant += 1
 
-        if user_info.referrer:
-            subscriber += 1
+            if user_info.referrer:
+                subscriber += 1
 
     text = (f'<b>Приглашающие:</b> {participant}\n'
             f'<b>Приглашённые:</b> {subscriber}\n\n'
