@@ -16,6 +16,7 @@ class UsersStatus(str, enum.Enum):
     PARTICIPANT = 'participant'
     SUBSCRIBER = 'subscriber'
     BLOCKED_BOT = 'blocked_bot'
+    BAN = 'ban'
 
 
 class Callbacks(str, enum.Enum):
