@@ -120,7 +120,7 @@ async def get_user_referrals(user_id: int) -> tuple[UserRow]:
 
 
 # возвращает рейтинг пользователей
-async def get_users_rating(limit: int = 50) -> tuple[RatingRow]:
+async def get_users_rating(limit: int = 100) -> tuple[RatingRow]:
     query = (UserTable.select().with_only_columns(
         UserTable.c.referrer,
         sa.func.count(UserTable.c.id).label('points')
@@ -129,7 +129,7 @@ async def get_users_rating(limit: int = 50) -> tuple[RatingRow]:
         UserTable.c.status == UsersStatus.PARTICIPANT,
         UserTable.c.referrer is not None,
     )).where(UserTable.c.referrer.isnot(None)).
-             group_by(UserTable.c.referrer).order_by(sa.desc('points')))
+             group_by(UserTable.c.referrer).order_by(sa.desc('points')).limit(limit=limit))
 
     async with begin_connection() as conn:
         result = await conn.execute (query)
@@ -144,8 +144,8 @@ async def get_all_participant() -> tuple[UserRow]:
             UserTable.select().where(
                 UserTable.c.invite_link != None,
                 sa.or_(
-                UserTable.c.status == UsersStatus.SUBSCRIBER,
-                UserTable.c.status == UsersStatus.PARTICIPANT)))
+                    UserTable.c.status == UsersStatus.SUBSCRIBER,
+                    UserTable.c.status == UsersStatus.PARTICIPANT)))
 
     return result.all()
 
@@ -161,3 +161,15 @@ async def get_all_subscriber() -> tuple[UserRow]:
                     UserTable.c.status == UsersStatus.PARTICIPANT,)))
 
     return result.all()
+
+
+# возвращает всех подписчиков пользователя
+async def get_random_subscriber() -> UserRow:
+    async with begin_connection() as conn:
+        result = await conn.execute (
+            UserTable.select().where(
+                sa.or_(
+                    UserTable.c.status == UsersStatus.SUBSCRIBER,
+                    UserTable.c.status == UsersStatus.PARTICIPANT,)).order_by(sa.func.random()).limit(1))
+
+    return result.first()

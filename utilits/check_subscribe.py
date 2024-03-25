@@ -13,6 +13,7 @@ from enums import UsersStatus
 
 async def schedulers_start():
     scheduler.add_job(send_messages_sub, trigger='interval', minutes=1)
+    scheduler.add_job(check_random_user, trigger='interval', seconds=5)
     scheduler.start()
 
 
@@ -100,3 +101,12 @@ async def send_messages_sub():
 
         except Exception as ex:
             logging.warning(f'{datetime.now(TZ)}: {ex}')
+
+
+# проверяет случайного пользователя на подписку
+async def check_random_user():
+    user = await db.get_random_subscriber()
+    subscribe_info = await bot.get_chat_member (chat_id=CHANNEL_ID, user_id=user.user_id)
+    if subscribe_info and subscribe_info.status == ChatMemberStatus.LEFT:
+        await db.update_user(user_id=user.user_id, status=UsersStatus.BAN.value)
+

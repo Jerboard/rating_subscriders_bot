@@ -42,19 +42,12 @@ async def admin_rating_start(cb: CallbackQuery, state: FSMContext):
     # клавиатура
     text = 'Сколько позиций рейтинга прислать?'
     await cb.message.answer(text, reply_markup=kb.get_len_rating_kb())
-    # await cb.message.answer(text, reply_markup=kb.get_close_kb())
 
 
 # рейтинг
 # @dp.message(StateFilter(Callbacks.ADMIN_RATING_START.value))
 @dp.callback_query(lambda cb: cb.data.startswith(Callbacks.ADMIN_RATING_SEND.value))
 async def admin_rating_send(cb: CallbackQuery, state: FSMContext) -> None:
-    # if not msg.text.isdigit():
-    #     sent = await msg.answer('❗️ Отправьте целое число')
-    #     await sleep(3)
-    #     await sent.delete()
-    # else:
-    #     await state.clear()
     _, len_rating_str = cb.data.split(':')
     users_rating = await db.get_users_rating (limit=int(len_rating_str))
     for row in users_rating:
