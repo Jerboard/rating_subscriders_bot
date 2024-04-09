@@ -26,3 +26,4 @@ class Callbacks(str, enum.Enum):
     ADMIN_RATING_SEND = 'admin_rating_send'
     ADMIN_SENDING_ALL = 'admin_sending_all'
     ADMIN_SEND_MESSAGE = 'admin_send_message'
+    ADMIN_SEARCH_USER = 'admin_search_user'

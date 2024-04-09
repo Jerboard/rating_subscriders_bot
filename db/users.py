@@ -173,3 +173,21 @@ async def get_random_subscriber() -> UserRow:
                     UserTable.c.status == UsersStatus.PARTICIPANT,)).order_by(sa.func.random()).limit(1))
 
     return result.first()
+
+
+# возвращает информацию пользователя
+async def search_user(user_id: int = None, full_name: str = None, username: str = None) -> t.Union[UserRow, None]:
+    query = UserTable.select()
+
+    if user_id:
+        query = query.where(UserTable.c.user_id == user_id)
+
+    elif full_name:
+        query = query.where(UserTable.c.full_name == full_name)
+
+    elif username:
+        query = query.where(UserTable.c.username == username)
+
+    async with begin_connection() as conn:
+        result = await conn.execute(query)
+    return result.first()

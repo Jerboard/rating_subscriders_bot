@@ -17,6 +17,11 @@ def get_main_admin_kb():
         [InlineKeyboardButton(text='Статистика', callback_data=Callbacks.ADMIN_STATISTIC.value)],
         [InlineKeyboardButton(text='Написать лидерам рейтинга', callback_data=Callbacks.ADMIN_RATING_START.value)],
         [InlineKeyboardButton(text='Написать всем', callback_data=f'{Callbacks.ADMIN_SEND_MESSAGE.value}:all')],
+        [InlineKeyboardButton(text='Написать по ID', callback_data=f'{Callbacks.ADMIN_SEARCH_USER.value}:id')],
+        [InlineKeyboardButton(text='Написать полному имени',
+                              callback_data=f'{Callbacks.ADMIN_SEARCH_USER.value}:fullname')],
+        [InlineKeyboardButton(text='Написать по имени пользователя',
+                              callback_data=f'{Callbacks.ADMIN_SEARCH_USER.value}:username')],
     ])
 
 

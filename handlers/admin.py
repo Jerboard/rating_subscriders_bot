@@ -81,6 +81,54 @@ async def admin_rating_start(cb: CallbackQuery, state: FSMContext):
     })
 
 
+# написать по...
+@dp.callback_query(lambda cb: cb.data.startswith(Callbacks.ADMIN_SEARCH_USER.value))
+async def admin_rating_start(cb: CallbackQuery, state: FSMContext):
+    _, pattern = cb.data.split(':')
+
+    await state.set_state(Callbacks.ADMIN_SEARCH_USER.value)
+    await state.update_data(data={'pattern': pattern})
+
+    if pattern == 'id':
+        pattern_str = 'ID'
+    elif pattern == 'fullname':
+        pattern_str = 'полное имя'
+    else:
+        pattern_str = 'имя пользователя'
+
+    text = f'Отправьте {pattern_str} пользователя'
+    await cb.message.answer(text=text, reply_markup=kb.get_close_kb())
+
+
+# рейтинг
+@dp.message(StateFilter(Callbacks.ADMIN_SEARCH_USER.value))
+async def admin_rating_send(msg: Message, state: FSMContext) -> None:
+    data = await state.get_data()
+
+    print(msg.text)
+    print(data['pattern'])
+
+    if data['pattern'] == 'id':
+        print ('id')
+        user_info = await db.search_user(user_id=msg.text)
+    elif data['pattern'] == 'fullname':
+        print ('fullname')
+        user_info = await db.search_user(full_name=msg.text)
+    else:
+        print ('username')
+        user_info = await db.search_user(username=msg.text)
+
+    if user_info:
+        await state.clear ()
+        text = f'{user_info.user_id} {user_info.full_name} {user_info.username}'
+        await msg.answer(text=text, reply_markup=kb.get_send_message_kb(user_info.user_id))
+
+    else:
+        sent = await msg.answer(f'❗️ Пользователь {msg.text} не найден')
+        await sleep(3)
+        await sent.delete()
+
+
 # рейтинг
 @dp.message(StateFilter(Callbacks.ADMIN_SEND_MESSAGE.value))
 async def admin_rating_send(msg: Message, state: FSMContext) -> None:

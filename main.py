@@ -10,7 +10,8 @@ from utilits.check_subscribe import schedulers_start
 
 async def main() -> None:
     await init_models()
-    await schedulers_start()
+    if not DEBUG:
+        await schedulers_start()
     await set_main_menu()
     await dp.start_polling(bot)
 

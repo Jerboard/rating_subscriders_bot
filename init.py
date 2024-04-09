@@ -19,15 +19,23 @@ except:
     pass
 
 load_dotenv ()
+DEBUG = bool(int(getenv('DEBUG')))
+
 loop = asyncio.get_event_loop()
 dp = Dispatcher()
-bot = Bot(getenv("TOKEN"), parse_mode=ParseMode.HTML)
+
+if DEBUG:
+    TOKEN = getenv("TEST_TOKEN")
+else:
+    TOKEN = getenv("TOKEN")
+
+
+bot = Bot(TOKEN, parse_mode=ParseMode.HTML)
 
 TZ = timezone('Europe/Moscow')
 
 scheduler = AsyncIOScheduler(timezone=TZ)
 
-DEBUG = bool(int(getenv('DEBUG')))
 
 ENGINE = create_async_engine(url=getenv('DB_URL'))
 
@@ -37,8 +45,10 @@ TIME_FORMAT = getenv('TIME_FORMAT')
 CHANNEL_ID = int(getenv('CHANNEL_ID'))
 BOT_NAME = getenv('BOT_NAME')
 
-# ADMINS = [524275902, 1456925942]
-ADMINS = [5380751903, 1456925942, 524275902]
+if DEBUG:
+    ADMINS = [524275902, 1456925942]
+else:
+    ADMINS = [5380751903, 1456925942, 524275902]
 
 
 async def set_main_menu():
